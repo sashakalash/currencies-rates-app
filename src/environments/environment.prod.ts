@@ -1,3 +1,8 @@
 export const environment = {
-  production: true
+  production: true,
+  urls: {
+    currency: {
+      rates: '/api.coingecko.com/api/v3/exchange_rates'
+    }
+  }
 };
