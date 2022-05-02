@@ -9,12 +9,13 @@ export enum CurrencyActionsTypes {
 }
 
 export const getRates = createAction(
-	CurrencyActionsTypes.GET_RATES
+  CurrencyActionsTypes.GET_RATES,
+  props<{ frequency: number }>()
 );
 
 export const getRatesSuccess = createAction(
   CurrencyActionsTypes.GET_RATES_SUCCESS,
-  props<{ rates: Currency[] }>()
+  props<{ prevRates: Currency[], currRates: Currency[] }>()
 );
 
 export const getRatesFail = createAction(

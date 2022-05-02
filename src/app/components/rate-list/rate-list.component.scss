@@ -1,0 +1,27 @@
+.wrapper {
+  overflow: scroll;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 10px;
+}
+
+mat-form-field {
+  width: 100%;
+  padding: 10px;
+}
+
+mat-icon {
+  &.__arrow_upward {
+    color: green;
+  }
+
+  &.__arrow_downward {
+    color: red;
+  }
+
+  &.__remove_circle_outline {
+    color: blue;
+  }
+}

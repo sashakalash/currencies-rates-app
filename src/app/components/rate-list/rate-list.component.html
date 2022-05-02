@@ -1,30 +1,80 @@
-<ng-container *ngIf="(rates$ | async) as rates;else emptyListTemp">
-  <table mat-table [dataSource]="rates" class="mat-elevation-z8">
-  
-    <ng-container matColumnDef="unit">
-      <th mat-header-cell *matHeaderCellDef> Unit </th>
-      <td mat-cell *matCellDef="let element"> {{element.unit}} </td>
-    </ng-container>
-  
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Name </th>
-      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-    </ng-container>
-  
-    <ng-container matColumnDef="value">
-      <th mat-header-cell *matHeaderCellDef> Value </th>
-      <td mat-cell *matCellDef="let element"> {{element.value}} </td>
-    </ng-container>
-  
-    <ng-container matColumnDef="type">
-      <th mat-header-cell *matHeaderCellDef> Type </th>
-      <td mat-cell *matCellDef="let element"> {{element.type}} </td>
-    </ng-container>
-  
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
-</ng-container>
+<mat-form-field class="example-full-width"
+                appearance="fill">
+  <mat-label>Enter request frequency in seconds</mat-label>
+  <input matInput
+         placeholder="enter seconds"
+         type="number"
+         [formControl]="frequencyControl">
+</mat-form-field>
+
+<mat-form-field class="example-full-width"
+                appearance="fill">
+  <mat-label>Hide currencies difference after...</mat-label>
+  <input matInput
+         placeholder="enter seconds"
+         type="number"
+         [formControl]="statusTimerControl">
+</mat-form-field>
+
+<div class="wrapper">
+  <ng-container *ngIf="(currRates$ | async) as rates;else emptyListTemp">
+    <table mat-table
+           [dataSource]="rates"
+           class="mat-elevation-z8">
+
+      <ng-container matColumnDef="unit">
+        <th mat-header-cell
+            *matHeaderCellDef> Unit </th>
+        <td mat-cell
+            *matCellDef="let element"> {{ element.unit }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell
+            *matHeaderCellDef> Name </th>
+        <td mat-cell
+            *matCellDef="let element"> {{ element.name }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="value">
+        <th mat-header-cell
+            *matHeaderCellDef> Value </th>
+        <td mat-cell
+            *matCellDef="let element"> {{ element.value }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="type">
+        <th mat-header-cell
+            *matHeaderCellDef> Type </th>
+        <td mat-cell
+            *matCellDef="let element"> {{ element.type }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="diff">
+        <th mat-header-cell
+            *matHeaderCellDef>
+          <mat-slide-toggle [checked]="isStatusVisible"
+                            (change)="isStatusVisible = !isStatusVisible">
+            Show difference</mat-slide-toggle>
+        </th>
+
+        <td mat-cell
+            *matCellDef="let element">
+          <ng-container
+                        *ngIf="(element | diffStatus:(prevRates$ | async)) as iconLabel">
+            <mat-icon [ngClass]="'__' + iconLabel"
+                      *ngIf="isStatusVisible">{{ iconLabel }}</mat-icon>
+          </ng-container>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row
+          *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row
+          *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </ng-container>
+</div>
 
 <ng-template #emptyListTemp>
   <span>Something's gone wrong</span>

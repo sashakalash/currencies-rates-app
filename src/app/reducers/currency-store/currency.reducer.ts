@@ -9,14 +9,16 @@ import { Currency } from 'src/app/core/interfaces/currency.interface';
 export const adapter: EntityAdapter<CurrencyApiResponse> = createEntityAdapter<CurrencyApiResponse>();
 
 export interface CurrencyState extends EntityState<CurrencyApiResponse> {
-  rates: Currency[];
+  currRates: Currency[];
+  prevRates: Currency[];
   currentUser: string | null;
   loading: boolean;
 	error: HandledError | null;
 }
 
 const initialState: CurrencyState = adapter.getInitialState({
-  rates: [],
+  currRates: [],
+  prevRates: [],
   currentUser: null,
   loading: false,
 	error: null
@@ -25,9 +27,10 @@ const initialState: CurrencyState = adapter.getInitialState({
 const authReducer = createReducer(
   initialState,
   on(CurrencyActions.getRates, (state) => ({ ...state, loading: true })),
-  on(CurrencyActions.getRatesSuccess, (state, { rates }) => ({
+  on(CurrencyActions.getRatesSuccess, (state, { currRates, prevRates }) => ({
     ...state,
-    rates,
+    currRates,
+    prevRates,
     loading: false
   })),
 );

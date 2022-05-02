@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { switchMap, catchError, of, map, timer, filter, take, timeout } from 'rxjs';
+import { switchMap, catchError, of, map, timer, timeout, pairwise, tap, flatMap, startWith } from 'rxjs';
 
 import * as CurrencyActions from './currency.actions';
 import { CurrencyService } from 'src/app/data-access/currency.service';
@@ -17,33 +17,27 @@ export class CurrencyEffects {
     private currencyService: CurrencyService,
   ) {}
 
+  private convertResponseToCurrency(data: CurrencyApiResponse): Currency[] {
+    return Object.entries(data.rates).map(([key, value]: [string, Currency]) => ({ key, ...value }))
+  }
+
   getRates$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CurrencyActions.getRates),
-      switchMap(() => {
-        return timer(0, 3000).pipe(
-          switchMap(() => this.currencyService.getCurrencies()
-          .pipe(
-            map((payload: CurrencyApiResponse) => {
-              const rates: Currency[] = Object.entries(payload.rates).map(([key, value]: [string, Currency]) => ({ key, ...value }));
-              return CurrencyActions.getRatesSuccess({ rates });
-            }),
-            catchError(error => of(CurrencyActions.getRatesFail({ error })))
-          )
-          ),
-          timeout(10000)
+      switchMap(payload => {
+        return timer(0, payload.frequency).pipe(
+          flatMap(() => this.currencyService.getCurrencies().pipe()),
+          startWith({ rates: {} }),
+          pairwise(),
+          tap(v => console.log(v)),
+          map(([prev, curr]: [CurrencyApiResponse, CurrencyApiResponse]) => {
+            const prevRates: Currency[] = this.convertResponseToCurrency(prev);
+            const currRates: Currency[] = this.convertResponseToCurrency(curr);
+            return CurrencyActions.getRatesSuccess({ prevRates, currRates });
+          }),
+          timeout(200000),
+          catchError(error => of(CurrencyActions.getRatesFail({ error })))
         )
-     
-        
-        
-        
-        // this.currencyService.getCurrencies().pipe(
-        //   map((payload: CurrencyApiResponse) => {
-        //     const rates: Currency[] = Object.entries(payload.rates).map(([key, value]: [string, Currency]) => ({ key, ...value }));
-        //     return CurrencyActions.getRatesSuccess({ rates });
-        //   }),
-        //   catchError(error => of(CurrencyActions.getRatesFail({ error })))
-        // );
       })
     )
   )

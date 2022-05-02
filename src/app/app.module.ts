@@ -5,7 +5,6 @@ import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from './material.module';
 import { HttpClientModule } from '@angular/common/http';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NotificationsHostComponent } from './components/notifications-host/notifications-host.component';
 import { ConfirmationDialodComponent } from './components/confirmation-dialod/confirmation-dialod.component';
 import { ContentWrapperComponent } from './components/content-wrapper/content-wrapper.component';
@@ -16,7 +15,8 @@ import { ToastComponent } from './components/toast/toast.component';
 import { ToastDirective } from './directives/toast.directive';
 import { RouterModule } from '@angular/router';
 import { RootStoreModule } from './reducers/root-store.module';
-
+import { StatusPipe } from './core/pipes/status.pipe';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,7 +28,8 @@ import { RootStoreModule } from './reducers/root-store.module';
     ToastComponent,
     NotificationsHostComponent,
     ConfirmationDialodComponent,
-    RateListComponent
+    RateListComponent,
+    StatusPipe,
   ],
   imports: [
     RouterModule,
@@ -38,8 +39,8 @@ import { RootStoreModule } from './reducers/root-store.module';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    NoopAnimationsModule,
     RootStoreModule,
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
