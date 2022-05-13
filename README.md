@@ -1,27 +1,7 @@
 # CurreniesApp
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.3.3.
-
-## Development server
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Please provide a website developed with Angular with below functionalities.
+* Requires a login page. Credentials can be checked hard-coded, no backend check is required.
+* All other pages can be accessible after authentication.
+* A page should be developed to collect crypto currency rates and store in ngrx. The api can be used to get the currency rates. Currency rates should be retrieved periodically, this period should be able to be chosen by the user from the page. It can be an input or a select element with pre-defined values. By default, it should be every 15 seconds. Please note that all other functionalities will use that currency rates. It means that the application is not responsible for the previous prices of the currencies, but should store the currencies rates which it retrieves.
+* After getting each currency rates, each rate must be compared with the previous value. Depending on the difference between the previous and the current values, an icon must be shown to the user to let them know the last change of the currency. For instance, a green up icon can be shown when the price goes high, or a red down icon if the price goes down, and another icon if the rate is same. Those icons must be shown in a limited time, and again users must be able to change the time which they want to see the icons on the page
